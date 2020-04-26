@@ -17,6 +17,9 @@ def pprint(msg):
 def main():
     
     def prompt_hook(current_prompt):
+        # Threads can be notified anywhere.
+        post_command('info threads')
+        
         # Notify frame change first 
         post_command('info frame')
         
@@ -74,10 +77,13 @@ def main():
         pprint('Could not process environment variable %s.' % (var))
         return
 
+    pprint('Turning off pagination...')
+    gdb.execute('set pagination off')
+    
     pprint('Starting command listener...')
     in_pipe.begin_reading(callback=post_command)
 
-    pprint('Overriding GDB prompt...')
+    pprint('Overriding GDB prompt...')    
     gdb.prompt_hook = prompt_hook
 
 if __name__=='__main__':

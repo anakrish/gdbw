@@ -21,6 +21,7 @@ from console import ConsoleWindow
 from disassembly import DisassemblyWindow
 from registers import RegistersWindow
 from source import SourceWindow
+from threads import ThreadsWindow
 
 class Application:
     def __init__(self):
@@ -33,6 +34,7 @@ class Application:
         self.callstack = CallstackWindow(self, show=False)
         self.disassembly = DisassemblyWindow(self, show=False)
         self.registers = RegistersWindow(self, show=False)
+        self.threads = ThreadsWindow(self, show=False)
         self.inferiors = ''
 
 
@@ -42,7 +44,8 @@ class Application:
 
         self.col2 = HSplit([self.argsnlocals.get_ui(),
                             self.registers.get_ui(),
-                            self.callstack.get_ui()])
+                            self.callstack.get_ui(),
+                            self.threads.get_ui()])
 
         self.container = VSplit([self.col1, self.col2])
         self.layout = Layout(container=self.container,
@@ -99,6 +102,10 @@ class Application:
         @kb.add('c-x', 'c', 's', eager=True)
         def _(event):
             self.callstack.toggle_show()
+
+        @kb.add('c-x', 't', eager=True)
+        def _(event):
+            self.threads.toggle_show()
 
         @kb.add('c-s', eager=True)
         def _(event):
@@ -179,6 +186,8 @@ class Application:
             elif cmd.startswith('info inferiors'):
                 self._handle_info_inferiors(output)
 
+            elif cmd.startswith('info threads'):
+                self.threads.handle_info_threads(output)
         except:
             self.log('***Exception %s' % (exec_info()[1]))
 
