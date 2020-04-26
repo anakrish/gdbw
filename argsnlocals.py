@@ -20,7 +20,7 @@ class ArgsnLocalsWindow:
         self.show = show
         self.args = LineItemsWindow(app=app,
                                     show=show,
-                                    title ='[ Args ]',
+                                    title ='[ Arguments ]',
                                     show_divider=self._show_divider)
         self.locals = LineItemsWindow(app=app,
                                       show=show,
