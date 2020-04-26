@@ -45,7 +45,8 @@ class Application:
         self.col2 = HSplit([self.argsnlocals.get_ui(),
                             self.registers.get_ui(),
                             self.callstack.get_ui(),
-                            self.threads.get_ui()])
+                            self.threads.get_ui(),
+                            self.breakpoints.get_ui()])
 
         self.container = VSplit([self.col1, self.col2])
         self.layout = Layout(container=self.container,
