@@ -27,7 +27,8 @@ class InfoLineLexer(Lexer):
         def lex_line(lineno):
             lchar = '\u2500'
             style = 'bold fg:DarkGoldenRod'
-            info = [('', lchar*4)]
+            line_style = 'fg:DarkSlateGrey'
+            info = [(line_style, lchar*4)]
             p = 0
             line = document.lines[lineno]
             w = 4
@@ -46,7 +47,7 @@ class InfoLineLexer(Lexer):
                         w += 2 + e - (p+1)
                     p = e
             if w < self.window.width:
-                info.append(('', lchar* (self.window.width - w)))
+                info.append((line_style, lchar* (self.window.width - w)))
             return info
         return lex_line
     

@@ -25,7 +25,7 @@ from infoline import InfoLine
 
 
 class Divider:
-    def __init__(self, style='bg:DarkGrey', type='Wide',
+    def __init__(self, style='bg:DarkGrey', type='Wide1',
                  width=2,show=lambda: True):
         if type == 'Wide':
             self.divider = Window(style='bg: DarkGrey', width=width)
@@ -33,7 +33,7 @@ class Divider:
             self.divider = VerticalLine()
 
         self.container = ConditionalContainer(
-            content=self.divider,
+            content=HSplit([self.divider], style='fg:DarkSlateGrey'),
             filter = Condition(show))
 
     def get_ui(self):
