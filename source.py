@@ -128,14 +128,13 @@ class SourceWindow:
     def _get_line_prefix(self, line, parts):
         loc = '%s:%d' % (self.basename, line+1)
         loc1 = '%s:%d' % (self.filename, line+1)
-        if self.app.has_breakpoint(loc1): # fullpath
-            prefix = 'X '
-        elif self.app.has_breakpoint(loc):
-            prefix = 'X'
-        else:
-            prefix = '  '
+        has_breakpoint = self.app.has_breakpoint(loc1) or \
+            self.app.has_breakpoint(loc)
+
+        bp = '\U0001f6d1'
+        pt = '\u2b95'
         if line == self.current_line:
-            return prefix + '=>'
+            return bp  + pt if has_breakpoint else '  ' + pt
         else:
-            return prefix + '  '
+            return bp + ' ' if has_breakpoint else '   '
     
