@@ -46,11 +46,11 @@ class LineItemsWindow(Window):
 
     def handle_output(self, output):
         self.changed = [False] * 100
-        lines = ['  ' + l for l in output.strip().split('\n')]
+        lines = [' ' + l for l in output.strip().split('\n')]
         for i in range(0, len(lines)):
             self.changed[i] = i < len(self.lines) and lines[i] != self.lines[i]
         self.lines = lines
-        self.buffer.text = output
+        self.buffer.text = '\n'.join(lines)
 
     def reset(self):
         self.lines = []
