@@ -55,7 +55,7 @@ class CallstackWindow(Window):
             output = p.sub('=>[%s]' % self.frame, output)
             p = output.find('=>')
             self.buffer.cursor_position = p
-        self.buffer.text = output
+        self.buffer.text = output.rstrip()
         self.fit_to_height()
 
     def handle_info_frame(self, output):
