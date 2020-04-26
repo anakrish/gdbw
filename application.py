@@ -72,37 +72,73 @@ class Application:
 
     def has_breakpoint(self, loc):
         return self.breakpoints.has_breakpoint(loc)
-    
+
+    def _hide_tui(self):
+        def hide(c):
+            if c.show:
+                c.toggle_show()
+        hide(self.source)
+        hide(self.disassembly)
+        hide(self.argsnlocals)
+        hide(self.registers)
+        hide(self.callstack)
+        hide(self.threads)
+        hide(self.breakpoints)
+        self.app.invalidate()
+        
     def _get_key_bindings(self):
         kb = KeyBindings()
         @kb.add('c-up')
         def _(event):
             self.console.enter_copy_mode()
 
+        @kb.add('c-x', 'a', eager=True)
+        def _(event):
+            self._hide_tui()
+            self.app.invalidate()
+            
+        @kb.add('c-x', '1', eager=True)
+        def _(event):
+            self._hide_tui()
+            self.source.show = True
+            self.app.invalidate()
+            
+        @kb.add('c-x', '2', eager=True)
+        def _(event):
+            self._hide_tui()
+            self.source.show = True
+            self.disassembly.show = True
+
         @kb.add('c-x', 's', eager=True)
         def _(event):
             self.source.toggle_show()
-
-        @kb.add('c-x', 'l', eager=True)
-        def _(event):
-            self.argsnlocals.toggle_show()
-
-        @kb.add('c-x', 'b', eager=True)
-        def _(event):
-            self.breakpoints.toggle_show()
-
-        @kb.add('c-x', 'r', eager=True)
-        def _(event):
-            self.registers.toggle_show()
-
+            self.app.invalidate()
+            
         @kb.add('c-x', 'd', eager=True)
         def _(event):
             self.disassembly.toggle_show()
+            self.app.invalidate()
             
-        @kb.add('c-x', 'c', 's', eager=True)
+        @kb.add('c-x', 'c', eager=True)
         def _(event):
             self.callstack.toggle_show()
-
+            self.app.invalidate()
+            
+        @kb.add('c-x', 'v', eager=True)
+        def _(event):
+            self.argsnlocals.toggle_show()
+            self.app.invalidate()
+            
+        @kb.add('c-x', 'b', eager=True)
+        def _(event):
+            self.breakpoints.toggle_show()
+            self.app.invalidate()
+            
+        @kb.add('c-x', 'r', eager=True)
+        def _(event):
+            self.registers.toggle_show()
+            self.app.invalidate()
+            
         @kb.add('c-x', 't', eager=True)
         def _(event):
             self.threads.toggle_show()
@@ -115,9 +151,9 @@ class Application:
         def _(event):
             pass
 
-        #@kb.add('c-x')
-        #def _(event):
-        #    pass
+        @kb.add('c-x')
+        def _(event):
+            pass
 
         @kb.add('s-right')
         def _(event):
