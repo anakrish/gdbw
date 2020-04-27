@@ -4,6 +4,9 @@ A `TUI (Text User Interface)` for `gdb` using [Python Prompt Toolkit](https://gi
 # Screenshots
 ![](images/screenshot_000.png)
 
+
+![](images/demo2.gif)
+
 # Installation
 
 Clone the repository:
