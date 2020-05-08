@@ -187,6 +187,8 @@ class Application:
         self.frame = frame
         if changed:
             self.argsnlocals.handle_frame_change()
+        self.source.handle_info_frame(output)
+        
             
     def _gdb_callback(self, response):
         self.log('***Received \n%s' % response)
@@ -194,14 +196,7 @@ class Application:
             p = response.find('\n')
             cmd = response[:p]
             output = response[p+1:]
-            if cmd.startswith('info source'):
-                self.source.handle_info_source(output)
-            elif cmd.startswith('info line'):
-                self.source.handle_info_line(output)
-                # This invalidate is needed to refresh source cursor properly.
-                self.app.invalidate()
-                
-            elif cmd.startswith('info args'):
+            if cmd.startswith('info args'):
                 self.argsnlocals.handle_info_args(output)            
             elif cmd.startswith('info locals'):
                 self.argsnlocals.handle_info_locals(output)
@@ -220,6 +215,7 @@ class Application:
                 
             elif cmd.startswith('info frame'):
                 self._handle_info_frame(output)
+                app.invalidate()
             elif cmd.startswith('info inferiors'):
                 self._handle_info_inferiors(output)
 

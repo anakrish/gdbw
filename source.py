@@ -67,10 +67,9 @@ class SourceWindow:
     def toggle_show(self):
         self.show = not self.show
 
-    def handle_info_source(self, output):
-        self.log('*** Handling info source')
-        self.handle_source_change = False
-        m = search('Located in (.+)', output)
+    def handle_info_frame(self, output):
+        m = search('\((.+):(\d+)\);', output)
+
         if not m:            
             self.buffer.document = Document()
             self.filename = None
@@ -78,6 +77,7 @@ class SourceWindow:
             self.info.set_info(self.default_title)
             return
 
+        self.handle_source_change = False
         filename = m[1]
         if filename and filename != self.filename:
             self.log('***Opening %s\n' % (filename))
@@ -87,7 +87,6 @@ class SourceWindow:
                 self.lexer = PygmentsLexer.from_filename(
                     filename,
                     sync_from_start=False)
-                    #syntax_sync=SyntaxSync())
                 if filename.endswith('.s') or filename.endswith('.S'):
                     self.lexer = PygmentsLexer(GasLexer,
                                                sync_from_start=False)
@@ -97,15 +96,9 @@ class SourceWindow:
                 self.handle_source_change = True
                 self._set_cursor(0)
                 self.info.set_info('[ %s ]' % filename)
-                #self.info.set_info('[ %s ]' % type(self.lexer))
         
 
-    def handle_info_line(self, output):
-        self.log('*** Here')
-        m = search('Line (.+) of', output)
-        if not m:
-            return
-        line = int(m[1]) - 1
+        line = int(m[2]) - 1
         self.current_line = line
         self.log('*** Current line %d' % (self.current_line))
         render_info = self.window.render_info

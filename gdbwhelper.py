@@ -38,10 +38,6 @@ def main():
         post_command('bt 64')
         post_command('info registers all')
 
-        # Order is important for these essential commands
-        post_command('info source')        
-        post_command('info line *$pc') # Only current pc
-
         return current_prompt.replace('(gdb) ', pretty('(gdb) '))
 
     def log(msg):
